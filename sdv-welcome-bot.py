@@ -32,6 +32,7 @@ async def on_message(message):
     # only check in the welcome channel and ignore messages from bots
     if message.channel.name == 'introduce-yoself' and message.author != client.user:
         author = message.author
+        intro_msg = message.content
         # if user does not have the sdv-role assign them the role and remove the unverified role
         if not discord.utils.get(message.author.roles, name='sdv-team'):
             # add sdv-team role
@@ -43,5 +44,8 @@ async def on_message(message):
             # welcome the member
             channel = discord.utils.get(author.guild.channels, name='introduce-yoself')
             await channel.send(f'Welcome, {author.mention}! You are now free to explore the SDV server! We are excited to have you here.', delete_after=30)
-
+            # copy the message to the general channel so peeps can welcome them
+            general = discord.utils.get(author.guild.channels, name='general')
+            await general.send(f'{author.mention} has joined the server! \n {intro_msg}')
+            
 client.run('DISCORD_TOKEN')
