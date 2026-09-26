@@ -1,0 +1,18 @@
+[Unit]
+Description=SportsDataverse Discord welcome gate (unverified -> sdv-team)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/mnt/sdv_repos/sdv_discord_bot
+# holds DISCORD_BOT_TOKEN=...; mode 600, never committed
+EnvironmentFile=/etc/sdv-discord-bot/sdv-discord-bot.env
+# the venv's python by absolute path: systemd's PATH has no uv
+ExecStart=/mnt/sdv_repos/sdv_discord_bot/.venv/bin/python sdv_welcome_bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
